@@ -43,11 +43,13 @@ namespace FirstApp {
 
 
 	private: System::Windows::Forms::Button^ button7;
+	private: System::Windows::Forms::Button^ plus;
+	private: System::Windows::Forms::Button^ equally;
 
-	private: System::Windows::Forms::Button^ button10;
 
 
-	private: System::Windows::Forms::Button^ button16;
+
+
 
 
 
@@ -55,10 +57,14 @@ namespace FirstApp {
 
 
 	private: System::Windows::Forms::Button^ btn_exit;
-	private: System::Windows::Forms::Label^ label1;
-	private: System::Windows::Forms::Button^ button11;
-	private: System::Windows::Forms::Button^ button12;
-	private: System::Windows::Forms::Button^ button15;
+	private: System::Windows::Forms::Label^ ResLab;
+	private: System::Windows::Forms::Button^ minus;
+	private: System::Windows::Forms::Button^ multiply;
+	private: System::Windows::Forms::Button^ divide;
+
+
+
+
 	private: System::Windows::Forms::Button^ button20;
 	private: System::Windows::Forms::Button^ button13;
 	private: System::Windows::Forms::Button^ button6;
@@ -72,7 +78,8 @@ namespace FirstApp {
 	private: System::Windows::Forms::Button^ button14;
 	private: System::Windows::Forms::Button^ button17;
 	private: System::Windows::Forms::Button^ button18;
-
+	private: int first_num;
+	private: char user_action = ' ';
 
 
 
@@ -109,13 +116,13 @@ namespace FirstApp {
 		void InitializeComponent(void)
 		{
 			this->button7 = (gcnew System::Windows::Forms::Button());
-			this->button10 = (gcnew System::Windows::Forms::Button());
-			this->button16 = (gcnew System::Windows::Forms::Button());
+			this->plus = (gcnew System::Windows::Forms::Button());
+			this->equally = (gcnew System::Windows::Forms::Button());
 			this->btn_exit = (gcnew System::Windows::Forms::Button());
-			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->button11 = (gcnew System::Windows::Forms::Button());
-			this->button12 = (gcnew System::Windows::Forms::Button());
-			this->button15 = (gcnew System::Windows::Forms::Button());
+			this->ResLab = (gcnew System::Windows::Forms::Label());
+			this->minus = (gcnew System::Windows::Forms::Button());
+			this->multiply = (gcnew System::Windows::Forms::Button());
+			this->divide = (gcnew System::Windows::Forms::Button());
 			this->button20 = (gcnew System::Windows::Forms::Button());
 			this->button13 = (gcnew System::Windows::Forms::Button());
 			this->button6 = (gcnew System::Windows::Forms::Button());
@@ -141,35 +148,38 @@ namespace FirstApp {
 			this->button7->TabIndex = 15;
 			this->button7->Text = L"1";
 			this->button7->UseVisualStyleBackColor = true;
+			this->button7->Click += gcnew System::EventHandler(this, &FormOne::AddSimbol);
 			// 
-			// button10
+			// plus
 			// 
-			this->button10->BackColor = System::Drawing::Color::Gold;
-			this->button10->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button10->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->plus->BackColor = System::Drawing::Color::Gold;
+			this->plus->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->plus->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->button10->Location = System::Drawing::Point(233, 104);
-			this->button10->Name = L"button10";
-			this->button10->Size = System::Drawing::Size(52, 46);
-			this->button10->TabIndex = 19;
-			this->button10->Text = L"+";
-			this->button10->UseVisualStyleBackColor = false;
+			this->plus->Location = System::Drawing::Point(233, 104);
+			this->plus->Name = L"plus";
+			this->plus->Size = System::Drawing::Size(52, 46);
+			this->plus->TabIndex = 19;
+			this->plus->Text = L"+";
+			this->plus->UseVisualStyleBackColor = false;
+			this->plus->Click += gcnew System::EventHandler(this, &FormOne::plus_Click);
 			// 
-			// button16
+			// equally
 			// 
-			this->button16->BackColor = System::Drawing::Color::DodgerBlue;
-			this->button16->Cursor = System::Windows::Forms::Cursors::Default;
-			this->button16->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button16->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 24, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->equally->BackColor = System::Drawing::Color::DodgerBlue;
+			this->equally->Cursor = System::Windows::Forms::Cursors::Default;
+			this->equally->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->equally->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 24, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->button16->ForeColor = System::Drawing::Color::White;
-			this->button16->Location = System::Drawing::Point(160, 315);
-			this->button16->Name = L"button16";
-			this->button16->Size = System::Drawing::Size(126, 46);
-			this->button16->TabIndex = 23;
-			this->button16->Text = L"=";
-			this->button16->TextImageRelation = System::Windows::Forms::TextImageRelation::TextAboveImage;
-			this->button16->UseVisualStyleBackColor = false;
+			this->equally->ForeColor = System::Drawing::Color::White;
+			this->equally->Location = System::Drawing::Point(160, 315);
+			this->equally->Name = L"equally";
+			this->equally->Size = System::Drawing::Size(126, 46);
+			this->equally->TabIndex = 23;
+			this->equally->Text = L"=";
+			this->equally->TextImageRelation = System::Windows::Forms::TextImageRelation::TextAboveImage;
+			this->equally->UseVisualStyleBackColor = false;
+			this->equally->Click += gcnew System::EventHandler(this, &FormOne::equally_Click);
 			// 
 			// btn_exit
 			// 
@@ -186,57 +196,59 @@ namespace FirstApp {
 			this->btn_exit->UseVisualStyleBackColor = false;
 			this->btn_exit->Click += gcnew System::EventHandler(this, &FormOne::btn_exit_Click);
 			// 
-			// label1
+			// ResLab
 			// 
-			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 27.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->ResLab->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 27.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->label1->ForeColor = System::Drawing::Color::White;
-			this->label1->Location = System::Drawing::Point(13, 39);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(273, 44);
-			this->label1->TabIndex = 35;
-			this->label1->Text = L"0";
-			this->label1->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
+			this->ResLab->ForeColor = System::Drawing::Color::White;
+			this->ResLab->Location = System::Drawing::Point(13, 39);
+			this->ResLab->Name = L"ResLab";
+			this->ResLab->Size = System::Drawing::Size(273, 44);
+			this->ResLab->TabIndex = 35;
+			this->ResLab->Text = L"0";
+			this->ResLab->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
 			// 
-			// button11
+			// minus
 			// 
-			this->button11->BackColor = System::Drawing::Color::Gold;
-			this->button11->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button11->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->minus->BackColor = System::Drawing::Color::Gold;
+			this->minus->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->minus->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->button11->Location = System::Drawing::Point(233, 156);
-			this->button11->Name = L"button11";
-			this->button11->Size = System::Drawing::Size(52, 46);
-			this->button11->TabIndex = 36;
-			this->button11->Text = L"-";
-			this->button11->UseVisualStyleBackColor = false;
-			this->button11->Click += gcnew System::EventHandler(this, &FormOne::button11_Click);
+			this->minus->Location = System::Drawing::Point(233, 156);
+			this->minus->Name = L"minus";
+			this->minus->Size = System::Drawing::Size(52, 46);
+			this->minus->TabIndex = 36;
+			this->minus->Text = L"-";
+			this->minus->UseVisualStyleBackColor = false;
+			this->minus->Click += gcnew System::EventHandler(this, &FormOne::minus_Click);
 			// 
-			// button12
+			// multiply
 			// 
-			this->button12->BackColor = System::Drawing::Color::Gold;
-			this->button12->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button12->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->multiply->BackColor = System::Drawing::Color::Gold;
+			this->multiply->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->multiply->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->button12->Location = System::Drawing::Point(233, 205);
-			this->button12->Name = L"button12";
-			this->button12->Size = System::Drawing::Size(52, 46);
-			this->button12->TabIndex = 37;
-			this->button12->Text = L"×";
-			this->button12->UseVisualStyleBackColor = false;
+			this->multiply->Location = System::Drawing::Point(233, 205);
+			this->multiply->Name = L"multiply";
+			this->multiply->Size = System::Drawing::Size(52, 46);
+			this->multiply->TabIndex = 37;
+			this->multiply->Text = L"×";
+			this->multiply->UseVisualStyleBackColor = false;
+			this->multiply->Click += gcnew System::EventHandler(this, &FormOne::multiply_Click);
 			// 
-			// button15
+			// divide
 			// 
-			this->button15->BackColor = System::Drawing::Color::Gold;
-			this->button15->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button15->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->divide->BackColor = System::Drawing::Color::Gold;
+			this->divide->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->divide->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->button15->Location = System::Drawing::Point(233, 257);
-			this->button15->Name = L"button15";
-			this->button15->Size = System::Drawing::Size(52, 46);
-			this->button15->TabIndex = 38;
-			this->button15->Text = L"÷";
-			this->button15->UseVisualStyleBackColor = false;
+			this->divide->Location = System::Drawing::Point(233, 257);
+			this->divide->Name = L"divide";
+			this->divide->Size = System::Drawing::Size(52, 46);
+			this->divide->TabIndex = 38;
+			this->divide->Text = L"÷";
+			this->divide->UseVisualStyleBackColor = false;
+			this->divide->Click += gcnew System::EventHandler(this, &FormOne::divide_Click);
 			// 
 			// button20
 			// 
@@ -250,7 +262,7 @@ namespace FirstApp {
 			this->button20->TabIndex = 39;
 			this->button20->Text = L"(";
 			this->button20->UseVisualStyleBackColor = false;
-			this->button20->Click += gcnew System::EventHandler(this, &FormOne::button20_Click);
+			this->button20->Click += gcnew System::EventHandler(this, &FormOne::AddSimbol);
 			// 
 			// button13
 			// 
@@ -264,6 +276,7 @@ namespace FirstApp {
 			this->button13->TabIndex = 40;
 			this->button13->Text = L")";
 			this->button13->UseVisualStyleBackColor = false;
+			this->button13->Click += gcnew System::EventHandler(this, &FormOne::AddSimbol);
 			// 
 			// button6
 			// 
@@ -275,6 +288,7 @@ namespace FirstApp {
 			this->button6->TabIndex = 41;
 			this->button6->Text = L"2";
 			this->button6->UseVisualStyleBackColor = true;
+			this->button6->Click += gcnew System::EventHandler(this, &FormOne::AddSimbol);
 			// 
 			// button8
 			// 
@@ -286,6 +300,7 @@ namespace FirstApp {
 			this->button8->TabIndex = 42;
 			this->button8->Text = L"3";
 			this->button8->UseVisualStyleBackColor = true;
+			this->button8->Click += gcnew System::EventHandler(this, &FormOne::AddSimbol);
 			// 
 			// button1
 			// 
@@ -297,6 +312,7 @@ namespace FirstApp {
 			this->button1->TabIndex = 45;
 			this->button1->Text = L"6";
 			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &FormOne::AddSimbol);
 			// 
 			// button2
 			// 
@@ -308,6 +324,7 @@ namespace FirstApp {
 			this->button2->TabIndex = 44;
 			this->button2->Text = L"5";
 			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &FormOne::AddSimbol);
 			// 
 			// button3
 			// 
@@ -319,6 +336,7 @@ namespace FirstApp {
 			this->button3->TabIndex = 43;
 			this->button3->Text = L"4";
 			this->button3->UseVisualStyleBackColor = true;
+			this->button3->Click += gcnew System::EventHandler(this, &FormOne::AddSimbol);
 			// 
 			// button4
 			// 
@@ -330,6 +348,7 @@ namespace FirstApp {
 			this->button4->TabIndex = 51;
 			this->button4->Text = L",";
 			this->button4->UseVisualStyleBackColor = true;
+			this->button4->Click += gcnew System::EventHandler(this, &FormOne::AddSimbol);
 			// 
 			// button5
 			// 
@@ -341,6 +360,7 @@ namespace FirstApp {
 			this->button5->TabIndex = 50;
 			this->button5->Text = L"0";
 			this->button5->UseVisualStyleBackColor = true;
+			this->button5->Click += gcnew System::EventHandler(this, &FormOne::AddSimbol);
 			// 
 			// button9
 			// 
@@ -350,8 +370,9 @@ namespace FirstApp {
 			this->button9->Name = L"button9";
 			this->button9->Size = System::Drawing::Size(67, 46);
 			this->button9->TabIndex = 49;
-			this->button9->Text = L"!";
+			this->button9->Text = L"С";
 			this->button9->UseVisualStyleBackColor = true;
+			this->button9->Click += gcnew System::EventHandler(this, &FormOne::CleanRes);
 			// 
 			// button14
 			// 
@@ -363,6 +384,7 @@ namespace FirstApp {
 			this->button14->TabIndex = 48;
 			this->button14->Text = L"9";
 			this->button14->UseVisualStyleBackColor = true;
+			this->button14->Click += gcnew System::EventHandler(this, &FormOne::AddSimbol);
 			// 
 			// button17
 			// 
@@ -374,6 +396,7 @@ namespace FirstApp {
 			this->button17->TabIndex = 47;
 			this->button17->Text = L"8";
 			this->button17->UseVisualStyleBackColor = true;
+			this->button17->Click += gcnew System::EventHandler(this, &FormOne::AddSimbol);
 			// 
 			// button18
 			// 
@@ -385,6 +408,7 @@ namespace FirstApp {
 			this->button18->TabIndex = 46;
 			this->button18->Text = L"7";
 			this->button18->UseVisualStyleBackColor = true;
+			this->button18->Click += gcnew System::EventHandler(this, &FormOne::AddSimbol);
 			// 
 			// FormOne
 			// 
@@ -405,14 +429,14 @@ namespace FirstApp {
 			this->Controls->Add(this->button6);
 			this->Controls->Add(this->button13);
 			this->Controls->Add(this->button20);
-			this->Controls->Add(this->button15);
-			this->Controls->Add(this->button12);
-			this->Controls->Add(this->button11);
+			this->Controls->Add(this->divide);
+			this->Controls->Add(this->multiply);
+			this->Controls->Add(this->minus);
 			this->Controls->Add(this->btn_exit);
-			this->Controls->Add(this->button16);
-			this->Controls->Add(this->button10);
+			this->Controls->Add(this->equally);
+			this->Controls->Add(this->plus);
 			this->Controls->Add(this->button7);
-			this->Controls->Add(this->label1);
+			this->Controls->Add(this->ResLab);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
 			this->Name = L"FormOne";
 			this->Text = L"FirstProjectWinForms";
@@ -428,18 +452,70 @@ namespace FirstApp {
 	private: System::Void FormOne_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
 
-private: System::Void button13_Click(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void label1_Click_1(System::Object^ sender, System::EventArgs^ e) {
-}
+
 private: System::Void btn_exit_Click(System::Object^ sender, System::EventArgs^ e) {
 	this->Close();
 
 }
 
-private: System::Void button11_Click(System::Object^ sender, System::EventArgs^ e) {
+
+
+private: System::Void AddSimbol(System::Object^ sender, System::EventArgs^ e) {
+	Button^ button = safe_cast<Button^>(sender);
+	this->ResLab->ForeColor = Color::White;
+	if (this->ResLab->Text == "0") {
+		this->ResLab->Text = button->Text;
+	}
+	else this->ResLab->Text += button->Text;
 }
-private: System::Void button20_Click(System::Object^ sender, System::EventArgs^ e) {
+private: System::Void CleanRes(System::Object^ sender, System::EventArgs^ e) {
+	this->ResLab->Text = "0";
+}
+private: System::Void plus_Click(System::Object^ sender, System::EventArgs^ e) {
+	math_action('+');
+}
+private: System::Void minus_Click(System::Object^ sender, System::EventArgs^ e) {
+	math_action('-');
+}
+private: System::Void multiply_Click(System::Object^ sender, System::EventArgs^ e) {
+	math_action('*');
+}
+private: System::Void divide_Click(System::Object^ sender, System::EventArgs^ e) {
+	math_action('/');
+}
+
+private: System::Void math_action(char action) {
+	this->first_num = System::Convert::ToInt32(this->ResLab->Text);
+	this->user_action = action;
+	this->ResLab->Text = "0";
+}
+private: System::Void equally_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (user_action == ' ')
+		return;
+	
+	int second = System::Convert::ToInt32(this->ResLab->Text);
+	int res;
+	switch (this->user_action)
+	{
+	case '+': res = first_num + second; break;
+	case '-': res = first_num - second; break;
+	case '*': res = first_num * second; break;
+	case '/':
+		if (second == 0) {
+			res = 0;
+			MessageBox::Show(this, "Действие запрещено", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			this->ResLab->ForeColor = Color::DarkRed;
+		}
+		else
+			res = first_num / second;
+		break;
+
+	default:
+		break;
+	}
+
+	
+	this->ResLab->Text = System::Convert::ToString(res);
 }
 };
 }
